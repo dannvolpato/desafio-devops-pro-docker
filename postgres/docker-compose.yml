@@ -1,0 +1,34 @@
+version: '3.9'
+
+networks:
+  elefante:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: postgresql
+    image: postgres:15.2
+    restart: always
+    environment:
+      POSTGRES_USER: pppuser
+      POSTGRES_PASSWORD: ppppass
+    volumes:
+      - ~/.postgresql/data:/var/lib/postgresql/data
+    ports:
+      - 15432:5432
+    networks:
+      - elefante
+  
+  pgadmin:
+    container_name: interface
+    image: dpage/pgadmin4:6.20
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "teste@teste.com"
+      PGADMIN_DEFAULT_PASSWORD: "postgres"
+    ports:
+      - 16543:80
+    depends_on:
+      - postgres
+    networks:
+      - elefante
