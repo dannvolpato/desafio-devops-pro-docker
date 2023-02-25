@@ -1,0 +1,33 @@
+version: '3.9'
+
+networks:
+  maria-net:
+    driver: bridge
+
+services:
+  mariadb:
+    container_name: mary-jane
+    image: mariadb:10.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mary-bird
+      MYSQL_USER: maria-mysql 
+      MYSQL_PASSWORD: mysql-pass
+    ports:
+      - 3306:3306
+    volumes:
+      - ~/.mariadb/data:/var/lib/mysql
+    networks:
+      - maria-net
+
+  phpmyadmin:
+    container_name: phpMA
+    image: phpmyadmin:5.2.1
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: mary-jane
+      PMA_PORT: 3306 
+    networks:
+      - maria-net
